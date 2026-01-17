@@ -23,6 +23,11 @@ export class PostService {
   }
 
   async update(id: string, updatePostDto: UpdatePostDto): Promise<Post | null> {
+    const post = await this.postModel.findById(id).exec();
+    if (!post) {
+      throw new NotFoundException(`Post with id ${id} not found`);
+    }
+
     return this.postModel.findByIdAndUpdate(id, updatePostDto, { new: true }).exec();
   }
 
